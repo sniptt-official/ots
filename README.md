@@ -34,6 +34,12 @@ To update to latest version of `ots`, use:
 brew upgrade sniptt-official/ots/ots
 ```
 
+### Go
+
+```sh
+go get -u github.com/sniptt-official/ots
+```
+
 ### Manual
 
 For manual installation instructions on macOS and Linux, please refer to the dedicated [install docs](./docs/manual-install.md).
