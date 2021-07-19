@@ -24,8 +24,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/sniptt-official/ots/api/client"
 	"github.com/sniptt-official/ots/crypto/encrypt"
-	"github.com/sniptt-official/ots/http/client"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh/terminal"
 )
