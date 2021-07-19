@@ -12,6 +12,10 @@
 
 <div align="center">🔐 Share end-to-end encrypted secrets with others via a one-time URL</div>
 
+***
+
+![render1626708359939](https://user-images.githubusercontent.com/84327906/126185502-993027b7-2d0d-4ee4-a12b-daa0656dc193.gif)
+
 ## Install
 
 ### Homebrew
