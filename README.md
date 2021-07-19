@@ -10,7 +10,15 @@
 
 ***
 
-<div align="center">🔐 Share end-to-end encrypted secrets with others via a one-time URL</div>
+<div align="center">🔐 <b>Share end-to-end encrypted secrets with others via a one-time URL</b></div>
+
+<br/>
+
+<div align="center">Use to securely share API Keys, Signing secrets, Passwords, etc. with 3rd parties or with your teams.</div>
+
+<br/>
+
+<div align="center">Secrets are descructed once viewed, or after specified expiry.</div>
 
 ***
 
@@ -25,6 +33,8 @@ The recommended way to install `ots` on macOS is via Homebrew.
 ```sh
 brew install sniptt-official/ots/ots
 ```
+
+*NOTE: We need 30 forks, 30 watchers, and 75 stars to make it to Homebrew/core. Please help us get there 👀!*
 
 #### Update
 
