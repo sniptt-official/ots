@@ -27,7 +27,7 @@ import (
 	"github.com/sniptt-official/ots/api/client"
 	"github.com/sniptt-official/ots/crypto/encrypt"
 	"github.com/spf13/cobra"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 const (
@@ -68,7 +68,7 @@ from the server upon retrieval therefore can only be viewed once.
 				return err
 			}
 
-			ots, err := client.CreateOts(encryptedBytes, uint32(expires.Seconds()))
+			ots, err := client.CreateOts(encryptedBytes, expires)
 			if err != nil {
 				return err
 			}
@@ -76,9 +76,9 @@ from the server upon retrieval therefore can only be viewed once.
 			expiresAt := time.Unix(ots.ExpiresAt, 0)
 
 			q := ots.ViewURL.Query()
-			q.Set("p", base64.URLEncoding.EncodeToString(secretKey))
 			q.Set("ref", "cli")
 			ots.ViewURL.RawQuery = q.Encode()
+			ots.ViewURL.Fragment = base64.URLEncoding.EncodeToString(secretKey)
 
 			fmt.Printf(`
 Your secret is now available on the below URL.
@@ -91,7 +91,7 @@ Please note that once retrieved, the secret will no longer
 be available for viewing. If not viewed, the secret will
 automatically expire at approximately %v.
 `,
-				ots.ViewURL,
+				ots.ViewURL.String(),
 				expiresAt.Format("2 Jan 2006 15:04:05"),
 			)
 
@@ -120,7 +120,7 @@ func getInputBytes() ([]byte, error) {
 	} else {
 		fmt.Print("Enter your secret: ")
 
-		bytes, err := terminal.ReadPassword(int(syscall.Stdin))
+		bytes, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
 			return nil, err
 		}

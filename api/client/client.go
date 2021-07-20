@@ -23,6 +23,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type CreateOtsReq struct {
@@ -36,10 +37,10 @@ type CreateOtsRes struct {
 	ViewURL   *url.URL
 }
 
-func CreateOts(encryptedBytes []byte, expiresIn uint32) (*CreateOtsRes, error) {
+func CreateOts(encryptedBytes []byte, expiresIn time.Duration) (*CreateOtsRes, error) {
 	reqBody := &CreateOtsReq{
 		EncryptedBytes: base64.StdEncoding.EncodeToString(encryptedBytes),
-		ExpiresIn:      expiresIn, // Seconds resolution
+		ExpiresIn:      uint32(expiresIn.Seconds()),
 	}
 
 	resBody := &CreateOtsRes{}
@@ -57,7 +58,7 @@ func CreateOts(encryptedBytes []byte, expiresIn uint32) (*CreateOtsRes, error) {
 	}
 	defer res.Body.Close()
 
-	err = decodeJSON(res, &resBody)
+	err = decodeJSON(res, resBody)
 	if err != nil {
 		return nil, err
 	}
