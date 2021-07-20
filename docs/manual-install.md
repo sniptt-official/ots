@@ -3,10 +3,10 @@
 
 ## macOS and Linux
 
-See available binaries on the [releases page](https://github.com/sniptt-official/ots-cli/releases).
+See available binaries on the [releases page](https://github.com/sniptt-official/ots/releases).
 
 ```sh
-$ curl -L https://github.com/sniptt-official/ots-cli/releases/download/v0.0.5/ots-cli_0.0.5_darwin_amd64.tar.gz -o ots-cli.tar.gz
+$ curl -L https://github.com/sniptt-official/ots/releases/download/v0.0.5/ots-cli_0.0.5_darwin_amd64.tar.gz -o ots-cli.tar.gz
 $ sudo mkdir -p /usr/local/ots-cli
 $ sudo tar -C /usr/local/ots-cli -xvf ots-cli.tar.gz
 $ sudo ln -sf /usr/local/ots-cli/ots-cli /usr/local/bin/ots
