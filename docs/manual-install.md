@@ -6,11 +6,11 @@
 See available binaries on the [releases page](https://github.com/sniptt-official/ots/releases).
 
 ```sh
-$ curl -L https://github.com/sniptt-official/ots/releases/download/v0.0.5/ots-cli_0.0.5_darwin_amd64.tar.gz -o ots-cli.tar.gz
+$ curl -L https://github.com/sniptt-official/ots/releases/download/v0.0.6/ots_0.0.6_darwin_amd64.tar.gz -o ots.tar.gz
 $ sudo mkdir -p /usr/local/ots-cli
-$ sudo tar -C /usr/local/ots-cli -xvf ots-cli.tar.gz
-$ sudo ln -sf /usr/local/ots-cli/ots-cli /usr/local/bin/ots
-$ rm ots-cli.tar.gz
+$ sudo tar -C /usr/local/ots-cli -xvf ots.tar.gz
+$ sudo ln -sf /usr/local/ots-cli/ots /usr/local/bin/ots
+$ rm ots.tar.gz
 ```
 
 Assuming `/usr/local/bin` is on your `PATH`, you can now run:
@@ -33,7 +33,7 @@ $ which ots
 
 ```sh
 $ ls -l /usr/local/bin/ots
-lrwxr-xr-x  1 root  admin  26 15 Jul 16:00 /usr/local/bin/ots -> /usr/local/ots-cli/ots-cli
+lrwxr-xr-x  1 root  admin  26 15 Jul 16:00 /usr/local/bin/ots -> /usr/local/ots-cli/ots
 ```
 
 3.  Delete the symlink in the first folder. If your user account already has write permission to this folder, you don't need to use `sudo`.
