@@ -31,9 +31,9 @@ type CreateOtsReq struct {
 }
 
 type CreateOtsRes struct {
-	Id        string `json:"Id"`
+	ID        string `json:"Id"`
 	ExpiresAt int64  `json:"ExpiresAt"`
-	ViewUrl   *url.URL
+	ViewURL   *url.URL
 }
 
 func CreateOts(encryptedBytes []byte, expiresIn uint32) (*CreateOtsRes, error) {
@@ -45,15 +45,19 @@ func CreateOts(encryptedBytes []byte, expiresIn uint32) (*CreateOtsRes, error) {
 	resBody := &CreateOtsRes{}
 
 	payloadBuf := new(bytes.Buffer)
-	json.NewEncoder(payloadBuf).Encode(reqBody)
+	err := json.NewEncoder(payloadBuf).Encode(reqBody)
+	if err != nil {
+		return nil, err
+	}
 
 	// TODO: Make part of config
 	res, err := http.Post("https://apiv2.beta.snipt.io/secrets", "application/json", payloadBuf)
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
-	err = decodeJson(res, &resBody)
+	err = decodeJSON(res, &resBody)
 	if err != nil {
 		return nil, err
 	}
@@ -63,12 +67,12 @@ func CreateOts(encryptedBytes []byte, expiresIn uint32) (*CreateOtsRes, error) {
 		return nil, err
 	}
 
-	resBody.ViewUrl = u
+	resBody.ViewURL = u
 
 	return resBody, nil
 }
 
-func decodeJson(res *http.Response, target interface{}) error {
+func decodeJSON(res *http.Response, target interface{}) error {
 	statusOK := res.StatusCode >= 200 && res.StatusCode < 300
 
 	if !statusOK {

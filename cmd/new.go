@@ -30,57 +30,57 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
-var expires string
+const (
+	defaultExpiry = 24 * time.Hour
+)
 
-// newCmd represents the new command
-var newCmd = &cobra.Command{
-	Use:   "new",
-	Short: "Create end-to-end encrypted secret",
-	Long: `
+var (
+	expires time.Duration
+
+	// newCmd represents the new command
+	newCmd = &cobra.Command{
+		Use:   "new",
+		Short: "Create end-to-end encrypted secret",
+		Long: `
 Encrypts a secret and makes it available for sharing via one-time URL.
 
 The secret is stored encrypted for a specified duration which can range
 from 5 minutes to 7 days (default is 72 hours). The secret gets deleted
 from the server upon retrieval therefore can only be viewed once.
 `,
-	Args: cobra.NoArgs,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		duration, err := time.ParseDuration(expires)
-		if err != nil {
-			return err
-		}
+		Args: cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if expires.Minutes() < 5 {
+				return errors.New("expiry must be at least 5 minutes")
+			}
 
-		if duration.Minutes() < 5 {
-			return errors.New("expiry must be at least 5 minutes")
-		}
+			if expires.Hours() > 168 {
+				return errors.New("expiry must be less than 7 days")
+			}
 
-		if duration.Hours() > 168 {
-			return errors.New("expiry must be less than 7 days")
-		}
+			bytes, err := getInputBytes()
+			if err != nil {
+				return err
+			}
 
-		bytes, err := getInputBytes()
-		if err != nil {
-			return err
-		}
+			encryptedBytes, secretKey, err := encrypt.Bytes(bytes)
+			if err != nil {
+				return err
+			}
 
-		encryptedBytes, secretKey, err := encrypt.Bytes(bytes)
-		if err != nil {
-			return err
-		}
+			ots, err := client.CreateOts(encryptedBytes, uint32(expires.Seconds()))
+			if err != nil {
+				return err
+			}
 
-		ots, err := client.CreateOts(encryptedBytes, uint32(duration.Seconds()))
-		if err != nil {
-			return err
-		}
+			expiresAt := time.Unix(ots.ExpiresAt, 0)
 
-		expiresAt := time.Unix(ots.ExpiresAt, 0)
+			q := ots.ViewURL.Query()
+			q.Set("p", base64.URLEncoding.EncodeToString(secretKey))
+			q.Set("ref", "cli")
+			ots.ViewURL.RawQuery = q.Encode()
 
-		q := ots.ViewUrl.Query()
-		q.Set("p", base64.URLEncoding.EncodeToString(secretKey))
-		q.Set("ref", "cli")
-		ots.ViewUrl.RawQuery = q.Encode()
-
-		msg := fmt.Sprintf(`
+			fmt.Printf(`
 Your secret is now available on the below URL.
 
 %v
@@ -91,20 +91,19 @@ Please note that once retrieved, the secret will no longer
 be available for viewing. If not viewed, the secret will
 automatically expire at approximately %v.
 `,
-			ots.ViewUrl,
-			expiresAt.Format("2 Jan 2006 15:04:05"),
-		)
+				ots.ViewURL,
+				expiresAt.Format("2 Jan 2006 15:04:05"),
+			)
 
-		fmt.Print(msg)
-
-		return nil
-	},
-}
+			return nil
+		},
+	}
+)
 
 func init() {
 	rootCmd.AddCommand(newCmd)
 
-	newCmd.Flags().StringVarP(&expires, "expires", "x", "24h", "Secret will be deleted from the server after specified duration, supported units: s,m,h")
+	newCmd.Flags().DurationVarP(&expires, "expires", "x", defaultExpiry, "Secret will be deleted from the server after specified duration, supported units: s,m,h")
 }
 
 func getInputBytes() ([]byte, error) {
