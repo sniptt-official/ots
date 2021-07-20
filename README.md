@@ -14,7 +14,7 @@
 
 <br/>
 
-<div align="center">Use to securely share API Keys, Signing secrets, Passwords, etc. with 3rd parties or with your teams.</div>
+<div align="center">Use to securely share API Keys, Signing secrets, Passwords, etc. with 3rd parties or with your team.</div>
 
 <br/>
 
