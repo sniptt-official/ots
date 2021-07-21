@@ -63,7 +63,7 @@ from the server upon retrieval therefore can only be viewed once.
 				return err
 			}
 
-			encryptedBytes, secretKey, err := encrypt.Bytes(bytes)
+			encryptedBytes, secretKey, err := encrypt.Bytes(encrypt.BytesParams{Bytes: bytes})
 			if err != nil {
 				return err
 			}
@@ -107,7 +107,7 @@ func init() {
 }
 
 func getInputBytes() ([]byte, error) {
-	fi, _ := os.Stdin.Stat() // get the FileInfo struct describing the standard input.
+	fi, _ := os.Stdin.Stat() // Get the FileInfo struct describing the standard input.
 
 	if (fi.Mode() & os.ModeCharDevice) == 0 {
 		bytes, err := ioutil.ReadAll(os.Stdin)
