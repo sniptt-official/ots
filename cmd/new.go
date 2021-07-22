@@ -63,12 +63,14 @@ from the server upon retrieval therefore can only be viewed once.
 				return err
 			}
 
-			encryptedBytes, secretKey, err := encrypt.Bytes(bytes)
+			encryptedBytes, err := encrypt.Bytes(nil, bytes)
 			if err != nil {
 				return err
 			}
 
-			ots, err := client.CreateOts(encryptedBytes, expires)
+			ciphertext, key := encryptedBytes.Ciphertext, encryptedBytes.Key
+
+			ots, err := client.CreateOts(ciphertext, expires)
 			if err != nil {
 				return err
 			}
@@ -78,7 +80,7 @@ from the server upon retrieval therefore can only be viewed once.
 			q := ots.ViewURL.Query()
 			q.Set("ref", "cli")
 			ots.ViewURL.RawQuery = q.Encode()
-			ots.ViewURL.Fragment = base64.URLEncoding.EncodeToString(secretKey)
+			ots.ViewURL.Fragment = base64.URLEncoding.EncodeToString(key)
 
 			fmt.Printf(`
 Your secret is now available on the below URL.
@@ -107,7 +109,7 @@ func init() {
 }
 
 func getInputBytes() ([]byte, error) {
-	fi, _ := os.Stdin.Stat() // get the FileInfo struct describing the standard input.
+	fi, _ := os.Stdin.Stat() // Get the FileInfo struct describing the standard input.
 
 	if (fi.Mode() & os.ModeCharDevice) == 0 {
 		bytes, err := ioutil.ReadAll(os.Stdin)
