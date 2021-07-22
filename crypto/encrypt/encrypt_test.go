@@ -16,46 +16,35 @@ limitations under the License.
 package encrypt
 
 import (
-	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
-	"encoding/hex"
-	"regexp"
+	"strings"
 	"testing"
 )
 
 func TestBytes(t *testing.T) {
-	secret := "nuclear_launch_codes"
-	want := regexp.MustCompile(secret)
-	bytesToEncrypt := []byte(secret)
-	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
+	unencryptedSecret := "nuclear_launch_codes"
 
-	// Encrypt secret.
-	ciphertext, secretKey, nonce, err := Bytes(key, bytesToEncrypt)
-
-	// Remove nonce from start of ciphertext.
-	ciphertext = ciphertext[len(nonce):]
-
-	if bytes.Compare(key, secretKey) != 0 || err != nil {
-		t.Fatalf("Expected %v, got %v", key, secretKey)
-	}
+	encryptedBytes, err := Bytes(nil, []byte(unencryptedSecret))
+	ciphertext, key, nonce := encryptedBytes.Ciphertext, encryptedBytes.Key, encryptedBytes.Nonce
+	ciphertext = ciphertext[len(nonce):] // Remove nonce from start of ciphertext.
 
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
-	aesgcm, err := cipher.NewGCM(block)
+	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
-	decryptedSecret, err := aesgcm.Open(nil, nonce, ciphertext, nil)
+	decryptedSecret, err := aesGCM.Open(nil, nonce, ciphertext, nil)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
-	if !want.MatchString(string(decryptedSecret)) {
-		t.Fatalf("Expected %v, got %v", want, decryptedSecret)
+	if strings.Compare(unencryptedSecret, string(decryptedSecret)) != 0 {
+		t.Fatalf(`Bytes(nil, %v) = %v; want: %v`, []byte(unencryptedSecret), string(decryptedSecret), unencryptedSecret)
 	}
 }
