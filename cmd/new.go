@@ -63,7 +63,7 @@ from the server upon retrieval therefore can only be viewed once.
 				return err
 			}
 
-			encryptedBytes, secretKey, err := encrypt.Bytes(encrypt.BytesParams{Bytes: bytes})
+			encryptedBytes, secretKey, _, err := encrypt.Bytes(nil, bytes)
 			if err != nil {
 				return err
 			}

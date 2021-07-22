@@ -27,13 +27,11 @@ import (
 func TestBytes(t *testing.T) {
 	secret := "nuclear_launch_codes"
 	want := regexp.MustCompile(secret)
-
 	bytesToEncrypt := []byte(secret)
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
-	nonce, _ := hex.DecodeString("64a9433eae7ccceee2fc0eda")
 
 	// Encrypt secret.
-	ciphertext, secretKey, err := Bytes(BytesParams{Bytes: bytesToEncrypt, EncryptionKey: key, Nonce: nonce})
+	ciphertext, secretKey, nonce, err := Bytes(key, bytesToEncrypt)
 
 	// Remove nonce from start of ciphertext.
 	ciphertext = ciphertext[len(nonce):]
@@ -44,17 +42,17 @@ func TestBytes(t *testing.T) {
 
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err.Error())
+		t.Fatalf(err.Error())
 	}
 
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		panic(err.Error())
+		t.Fatalf(err.Error())
 	}
 
 	decryptedSecret, err := aesgcm.Open(nil, nonce, ciphertext, nil)
 	if err != nil {
-		panic(err.Error())
+		t.Fatalf(err.Error())
 	}
 
 	if !want.MatchString(string(decryptedSecret)) {

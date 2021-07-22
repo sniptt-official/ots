@@ -21,31 +21,20 @@ import (
 	"crypto/rand"
 )
 
-type BytesParams struct {
-	Bytes         []byte
-	EncryptionKey []byte
-	Nonce         []byte
-}
-
-func Bytes(params BytesParams) ([]byte, []byte, error) {
+func Bytes(key, bytes []byte) ([]byte, []byte, []byte, error) {
 	// Key should be 16 bytes (AES-128), 24 bytes (AES-192) or 32 bytes (AES-256)
-	var key []byte
-	var nonce []byte
-
-	if params.EncryptionKey == nil {
+	if key == nil {
 		key = make([]byte, 32)
 		_, err := rand.Read(key)
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, nil, err
 		}
-	} else {
-		key = params.EncryptionKey
 	}
 
 	// Generate a new aes cipher using the key above
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
 	// gcm or Galois/Counter Mode, is a mode of operation
@@ -53,23 +42,19 @@ func Bytes(params BytesParams) ([]byte, []byte, error) {
 	// - https://en.wikipedia.org/wiki/Galois/Counter_Mode
 	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
 	// Create a new byte array the size of the nonce,
 	// populate with a cryptographically secure random sequence
-	if params.Nonce == nil {
-		nonce = make([]byte, aesGCM.NonceSize())
-		_, err = rand.Read(nonce)
-		if err != nil {
-			return nil, nil, err
-		}
-	} else {
-		nonce = params.Nonce
+	nonce := make([]byte, aesGCM.NonceSize())
+	_, err = rand.Read(nonce)
+	if err != nil {
+		return nil, nil, nil, err
 	}
 
 	// Encrypt and authenticate plaintext
-	ciphertext := aesGCM.Seal(nonce, nonce, params.Bytes, nil)
+	ciphertext := aesGCM.Seal(nonce, nonce, bytes, nil)
 
-	return ciphertext, key, nil
+	return ciphertext, key, nonce, nil
 }
