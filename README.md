@@ -1,6 +1,6 @@
-<p align="center" style="text-align:center;">
+<p align="center">
   <a href="https://sniptt.com">
-    <img src=".github/assets/readme-hero-logo.svg" alt="Sniptt Logo" />
+    <img src=".github/assets/ots-social-cover.svg" alt="Sniptt Logo" />
   </a>
 </p>
 
