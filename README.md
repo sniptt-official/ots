@@ -10,15 +10,15 @@
 
 ***
 
-<div align="center">🔐 <b>Share end-to-end encrypted secrets with others via a one-time URL</b></div>
+<p align="center">🔐 <b>Share end-to-end encrypted secrets with others via a one-time URL</b></p>
 
 <br/>
 
-<div align="center">Use to securely share API Keys, Signing secrets, Passwords, etc. with 3rd parties or with your team.</div>
+<p align="center">Use to securely share API Keys, Signing secrets, Passwords, etc. with 3rd parties or with your team.</p>
 
 <br/>
 
-<div align="center">Secrets are descructed 💥 once viewed, or after specified expiry.</div>
+<p align="center">Secrets are descructed 💥 once viewed, or after specified expiry.</p>
 
 ***
 
