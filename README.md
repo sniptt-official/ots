@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://sniptt.com">
-    <img src=".github/assets/ots-social-cover.svg" alt="Sniptt Logo" />
+    <img src=".github/assets/ots-social-cover.svg" alt="Ots Logo" />
   </a>
 </p>
 
