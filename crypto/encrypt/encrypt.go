@@ -27,14 +27,12 @@ type EncryptedBytes struct {
 	Nonce      []byte
 }
 
-func Bytes(key, bytes []byte) (EncryptedBytes, error) {
+func Bytes(bytes []byte) (EncryptedBytes, error) {
 	// Key should be 16 bytes (AES-128), 24 bytes (AES-192) or 32 bytes (AES-256)
-	if key == nil {
-		key = make([]byte, 32)
-		_, err := rand.Read(key)
-		if err != nil {
-			return EncryptedBytes{}, err
-		}
+	key := make([]byte, 32)
+	_, err := rand.Read(key)
+	if err != nil {
+		return EncryptedBytes{}, err
 	}
 
 	// Generate a new aes cipher using the key above
