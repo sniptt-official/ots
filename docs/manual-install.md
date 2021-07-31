@@ -1,4 +1,3 @@
-
 # Manual install
 
 ## macOS and Linux

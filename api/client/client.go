@@ -51,8 +51,8 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration) (*CreateOtsRes, e
 		return nil, err
 	}
 
-	// TODO: Make part of config
-	res, err := http.Post("https://apiv2.beta.snipt.io/secrets", "application/json", payloadBuf)
+	// TODO: Make URL part of config
+	res, err := http.Post("https://api.ots.sniptt.com/secrets", "application/json", payloadBuf)
 	if err != nil {
 		return nil, err
 	}

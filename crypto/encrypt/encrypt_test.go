@@ -13,19 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package encrypt
+package encrypt_test
 
 import (
 	"crypto/aes"
 	"crypto/cipher"
 	"strings"
 	"testing"
+
+	"github.com/sniptt-official/ots/crypto/encrypt"
 )
 
 func TestBytes(t *testing.T) {
 	unencryptedSecret := "nuclear_launch_codes"
 
-	encryptedBytes, err := Bytes(nil, []byte(unencryptedSecret))
+	encryptedBytes, err := encrypt.Bytes([]byte(unencryptedSecret))
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
 	ciphertext, key, nonce := encryptedBytes.Ciphertext, encryptedBytes.Key, encryptedBytes.Nonce
 	ciphertext = ciphertext[len(nonce):] // Remove nonce from start of ciphertext.
 
