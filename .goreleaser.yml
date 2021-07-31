@@ -1,0 +1,3 @@
+builds:
+  ldflags:
+      - -s -w -X github.com/sniptt-official/ots/build.Version={{.Version}}
