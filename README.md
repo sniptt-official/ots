@@ -27,7 +27,8 @@
 The recommended way to install `ots` on macOS is via Homebrew.
 
 ```sh
-brew install sniptt-official/ots/ots
+brew tap sniptt-official/tap
+brew install ots
 ```
 
 *NOTE: We need 30 forks, 30 watchers, and 75 stars to make it to Homebrew/core. Please help us get there 👀!*
@@ -79,7 +80,7 @@ It goes without saying that URL-accessible one-time secrets should be shared wit
 
 ### Can I persist my secrets for later use?
 
-Please use the [snip-cli](https://github.com/sniptt-official/snip-cli) instead.
+Please use [snip](https://github.com/sniptt-official/snip) instead.
 
 ## License
 

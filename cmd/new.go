@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"github.com/sniptt-official/ots/api/client"
+	"github.com/sniptt-official/ots/build"
 	"github.com/sniptt-official/ots/crypto/encrypt"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
@@ -79,6 +80,7 @@ from the server upon retrieval therefore can only be viewed once.
 
 			q := ots.ViewURL.Query()
 			q.Set("ref", "cli")
+			q.Set("v", build.Version)
 			ots.ViewURL.RawQuery = q.Encode()
 			ots.ViewURL.Fragment = base64.URLEncoding.EncodeToString(key)
 
