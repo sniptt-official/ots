@@ -24,6 +24,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/sniptt-official/ots/build"
 )
 
 type CreateOtsReq struct {
@@ -51,8 +53,19 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration) (*CreateOtsRes, e
 		return nil, err
 	}
 
+	client := &http.Client{}
+
 	// TODO: Make URL part of config
-	res, err := http.Post("https://api.ots.sniptt.com/secrets", "application/json", payloadBuf)
+	req, err := http.NewRequest("POST", "https://api.ots.sniptt.com/secrets", payloadBuf)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-Client-Name", "ots-cli")
+	req.Header.Add("X-Client-Version", build.Version)
+
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
