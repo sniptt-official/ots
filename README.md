@@ -14,7 +14,7 @@
 
 <p align="center">Use to securely share API Keys, Signing secrets, Passwords, etc. with 3rd parties or with your team</p>
 
-<p align="center">Secrets are descructed 💥 once viewed, or after specified expiry</p>
+<p align="center">Secrets are destructed 💥 once viewed, or after specified expiry</p>
 
 ***
 
