@@ -18,7 +18,11 @@
 
 ***
 
-![render1626708858371](https://user-images.githubusercontent.com/84327906/126186752-156fe5bd-129a-4152-9dff-d7c01e581687.gif)
+<p align="center"><b>Looking for the web version?</b></p>
+
+<p align="center">https://www.sniptt.com/ots</p>
+
+***
 
 ## Install
 
@@ -44,6 +48,8 @@ go get -u github.com/sniptt-official/ots
 For manual installation instructions on macOS and Linux, please refer to the dedicated [install docs](./docs/manual-install.md).
 
 ## Usage
+
+![render1626708858371](https://user-images.githubusercontent.com/84327906/126186752-156fe5bd-129a-4152-9dff-d7c01e581687.gif)
 
 ### Prompt
 
