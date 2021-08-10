@@ -49,7 +49,7 @@ For manual installation instructions on macOS and Linux, please refer to the ded
 
 ## Usage
 
-![render1626708858371](https://user-images.githubusercontent.com/84327906/126186752-156fe5bd-129a-4152-9dff-d7c01e581687.gif)
+![render1628628123170](https://user-images.githubusercontent.com/778109/128932301-190388b3-171c-4e41-be5c-88ecf315beda.gif)
 
 ### Prompt
 
