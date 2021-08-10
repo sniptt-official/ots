@@ -78,6 +78,7 @@ Please refer to our Q&A discussions.
 
 - [Why should I trust you with my secrets?](https://github.com/sniptt-official/ots/discussions/13)
 - [Can I persist my secrets for later use?](https://github.com/sniptt-official/ots/discussions/15)
+- [What kind of limits are in place?](https://github.com/sniptt-official/ots/discussions/18)
 
 ## License
 
