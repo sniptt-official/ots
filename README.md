@@ -72,21 +72,12 @@ or
 $ cat .env | ots new
 ```
 
-## Security
+## FAQs
 
-### Why should I trust you with my secrets?
+Please refer to our Q&A discussions.
 
-All secrets are encrypted end-to-end, which means the plaintext values never leave your device. We do *not* log, track, share, or store the encryption key that protects your secret. You can check the client code to learn more about how we create the encryption key as well as what data is being sent to our servers.
-
-### Is sharing via URL really secure?
-
-Secrets created using the `ots new` command are what we refer to as "one-time secrets". Once they are retrieved by the recipient, they can no longer be viewed even if someone got hold of the URL. Furthermore, each one-time secret gets automatically deleted after specified duration if not viewed. By default, this is 24 hours but you can change this as required, for example `ots new -x 2h`.
-
-It goes without saying that URL-accessible one-time secrets should be shared with **intended recipients only**.
-
-### Can I persist my secrets for later use?
-
-Please use [snip](https://github.com/sniptt-official/snip) instead.
+- [Why should I trust you with my secrets?](https://github.com/sniptt-official/ots/discussions/13)
+- [Can I persist my secrets for later use?](https://github.com/sniptt-official/ots/discussions/15)
 
 ## License
 
