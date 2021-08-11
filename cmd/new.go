@@ -33,12 +33,13 @@ import (
 
 const (
 	defaultExpiry = 24 * time.Hour
+	defaultRegion = "us-east-1"
 )
 
 var (
 	expires time.Duration
+	region  string
 
-	// newCmd represents the new command.
 	newCmd = &cobra.Command{
 		Use:   "new",
 		Short: "Create end-to-end encrypted secret",
@@ -46,7 +47,7 @@ var (
 Encrypts a secret and makes it available for sharing via one-time URL.
 
 The secret is stored encrypted for a specified duration which can range
-from 5 minutes to 7 days (default is 72 hours). The secret gets deleted
+from 5 minutes to 7 days (default is 24 hours). The secret gets deleted
 from the server upon retrieval therefore can only be viewed once.
 `,
 		Args: cobra.NoArgs,
@@ -71,7 +72,7 @@ from the server upon retrieval therefore can only be viewed once.
 
 			ciphertext, key := encryptedBytes.Ciphertext, encryptedBytes.Key
 
-			ots, err := client.CreateOts(ciphertext, expires)
+			ots, err := client.CreateOts(ciphertext, expires, region)
 			if err != nil {
 				return err
 			}
@@ -108,6 +109,7 @@ func init() {
 	rootCmd.AddCommand(newCmd)
 
 	newCmd.Flags().DurationVarP(&expires, "expires", "x", defaultExpiry, "Secret will be deleted from the server after specified duration, supported units: s,m,h")
+	newCmd.Flags().StringVar(&region, "region", defaultRegion, "The region where secret should be created, supported regions: us-east-1,eu-central-1")
 }
 
 func getInputBytes() ([]byte, error) {
