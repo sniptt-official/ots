@@ -26,6 +26,7 @@ import (
 	"time"
 
 	"github.com/sniptt-official/ots/build"
+	"github.com/spf13/viper"
 )
 
 type CreateOtsReq struct {
@@ -40,6 +41,8 @@ type CreateOtsRes struct {
 }
 
 func CreateOts(encryptedBytes []byte, expiresIn time.Duration) (*CreateOtsRes, error) {
+	baseUrl := viper.GetString("base_url")
+
 	reqBody := &CreateOtsReq{
 		EncryptedBytes: base64.StdEncoding.EncodeToString(encryptedBytes),
 		ExpiresIn:      uint32(expiresIn.Seconds()),
@@ -55,8 +58,7 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration) (*CreateOtsRes, e
 
 	client := &http.Client{}
 
-	// TODO: Make URL part of config
-	req, err := http.NewRequest("POST", "https://api.ots.sniptt.com/secrets", payloadBuf)
+	req, err := http.NewRequest("POST", baseUrl, payloadBuf)
 	if err != nil {
 		return nil, err
 	}
