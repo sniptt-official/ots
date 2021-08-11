@@ -9,3 +9,9 @@ builds:
       - arm64
     ldflags:
         - -s -w -X github.com/sniptt-official/ots/build.Version={{.Version}}
+
+archives:
+  - format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
