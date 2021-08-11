@@ -38,7 +38,7 @@ const (
 var (
 	expires time.Duration
 
-	// newCmd represents the new command
+	// newCmd represents the new command.
 	newCmd = &cobra.Command{
 		Use:   "new",
 		Short: "Create end-to-end encrypted secret",

@@ -17,3 +17,4 @@ package build
 
 // Will be changed at build time via -ldflags
 var Version = "debug"
+var BaseUrl = "https://api.ots.sniptt.com/secrets"
