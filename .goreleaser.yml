@@ -1,4 +1,11 @@
 builds:
   -
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
     ldflags:
         - -s -w -X github.com/sniptt-official/ots/build.Version={{.Version}}
