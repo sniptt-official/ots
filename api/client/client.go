@@ -47,7 +47,7 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*
 	reqUrl := url.URL{
 		Scheme: "https",
 		Host:   fmt.Sprintf("api.%s.%s", region, baseUrl),
-		Path:   "secrets",
+		Path:   "one-time-secrets",
 	}
 
 	reqBody := &CreateOtsReq{
