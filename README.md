@@ -45,7 +45,7 @@ go get -u github.com/sniptt-official/ots
 
 ### Manual
 
-For manual installation instructions on macOS and Linux, please refer to the dedicated [install docs](./docs/manual-install.md).
+Please refer to the [manual install](./docs/manual-install.md) doc.
 
 ## Usage
 
