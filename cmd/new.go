@@ -33,7 +33,7 @@ import (
 
 const (
 	defaultExpiry = 24 * time.Hour
-	defaultRegion = "us-east-1"
+	defaultRegion = "us"
 )
 
 var (
@@ -58,6 +58,10 @@ from the server upon retrieval therefore can only be viewed once.
 
 			if expires.Hours() > 168 {
 				return errors.New("expiry must be less than 7 days")
+			}
+
+			if !isValidRegion(region) {
+				return errors.New("invalid region")
 			}
 
 			bytes, err := getInputBytes()
@@ -109,7 +113,7 @@ func init() {
 	rootCmd.AddCommand(newCmd)
 
 	newCmd.Flags().DurationVarP(&expires, "expires", "x", defaultExpiry, "Secret will be deleted from the server after specified duration, supported units: s,m,h")
-	newCmd.Flags().StringVar(&region, "region", defaultRegion, "The region where secret should be created, supported regions: us-east-1,eu-central-1")
+	newCmd.Flags().StringVar(&region, "region", defaultRegion, "The region where secret should be created, supported regions: us,eu")
 }
 
 func getInputBytes() ([]byte, error) {
@@ -133,4 +137,14 @@ func getInputBytes() ([]byte, error) {
 
 		return []byte(bytes), nil
 	}
+}
+
+func isValidRegion(region string) bool {
+	switch region {
+	case
+		"us",
+		"eu":
+		return true
+	}
+	return false
 }
