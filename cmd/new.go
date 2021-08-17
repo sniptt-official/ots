@@ -60,9 +60,7 @@ from the server upon retrieval therefore can only be viewed once.
 				return errors.New("expiry must be less than 7 days")
 			}
 
-			if !isValidRegion(region) {
-				return errors.New("invalid region")
-			}
+			// TODO: Add region validation
 
 			bytes, err := getInputBytes()
 			if err != nil {
@@ -84,7 +82,7 @@ from the server upon retrieval therefore can only be viewed once.
 			expiresAt := time.Unix(ots.ExpiresAt, 0)
 
 			q := ots.ViewURL.Query()
-			q.Set("ref", "cli")
+			q.Set("ref", "ots-cli")
 			q.Set("v", build.Version)
 			ots.ViewURL.RawQuery = q.Encode()
 			ots.ViewURL.Fragment = base64.URLEncoding.EncodeToString(key)
@@ -137,14 +135,4 @@ func getInputBytes() ([]byte, error) {
 
 		return []byte(bytes), nil
 	}
-}
-
-func isValidRegion(region string) bool {
-	switch region {
-	case
-		"us",
-		"eu":
-		return true
-	}
-	return false
 }
