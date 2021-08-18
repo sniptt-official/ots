@@ -44,11 +44,6 @@ type CreateOtsRes struct {
 func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*CreateOtsRes, error) {
 	baseUrl := viper.GetString("base_url")
 
-	region, err := getRegion(region)
-	if err != nil {
-		return nil, err
-	}
-
 	reqUrl := url.URL{
 		Scheme: "https",
 		Host:   fmt.Sprintf("ots.%s.%s", region, baseUrl),
@@ -63,7 +58,7 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*
 	resBody := &CreateOtsRes{}
 
 	payloadBuf := new(bytes.Buffer)
-	err = json.NewEncoder(payloadBuf).Encode(reqBody)
+	err := json.NewEncoder(payloadBuf).Encode(reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -98,17 +93,6 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*
 	resBody.ViewURL = u
 
 	return resBody, nil
-}
-
-func getRegion(region string) (string, error) {
-	switch region {
-	case "us":
-		return "us-east-1", nil
-	case "eu":
-		return "eu-central-1", nil
-	default:
-		return "", errors.New("invalid region")
-	}
 }
 
 func decodeJSON(res *http.Response, target interface{}) error {

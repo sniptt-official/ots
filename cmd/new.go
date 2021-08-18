@@ -33,7 +33,7 @@ import (
 
 const (
 	defaultExpiry = 24 * time.Hour
-	defaultRegion = "us"
+	defaultRegion = "us-east-1"
 )
 
 var (
@@ -60,7 +60,9 @@ from the server upon retrieval therefore can only be viewed once.
 				return errors.New("expiry must be less than 7 days")
 			}
 
-			// TODO: Add region validation
+			if !isValidRegion(region) {
+				return errors.New("invalid region")
+			}
 
 			bytes, err := getInputBytes()
 			if err != nil {
@@ -83,6 +85,7 @@ from the server upon retrieval therefore can only be viewed once.
 
 			q := ots.ViewURL.Query()
 			q.Set("ref", "ots-cli")
+			q.Set("region", region)
 			q.Set("v", build.Version)
 			ots.ViewURL.RawQuery = q.Encode()
 			ots.ViewURL.Fragment = base64.URLEncoding.EncodeToString(key)
@@ -111,7 +114,7 @@ func init() {
 	rootCmd.AddCommand(newCmd)
 
 	newCmd.Flags().DurationVarP(&expires, "expires", "x", defaultExpiry, "Secret will be deleted from the server after specified duration, supported units: s,m,h")
-	newCmd.Flags().StringVar(&region, "region", defaultRegion, "The region where secret should be created, supported regions: us,eu")
+	newCmd.Flags().StringVar(&region, "region", defaultRegion, "The region where secret should be created, supported regions: us-east-1,eu-central-1")
 }
 
 func getInputBytes() ([]byte, error) {
@@ -135,4 +138,14 @@ func getInputBytes() ([]byte, error) {
 
 		return []byte(bytes), nil
 	}
+}
+
+func isValidRegion(region string) bool {
+	switch region {
+	case
+		"us-east-1",
+		"eu-central-1":
+		return true
+	}
+	return false
 }
