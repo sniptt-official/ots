@@ -16,5 +16,5 @@ limitations under the License.
 package build
 
 // Will be changed at build time via -ldflags
-var Version = "dev"
-var BaseUrl = "api-dev.sniptt.com"
+var Version = "debug"
+var BaseUrl = "api.sniptt.com"
