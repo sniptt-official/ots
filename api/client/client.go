@@ -20,6 +20,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -30,18 +31,24 @@ import (
 )
 
 type CreateOtsReq struct {
-	EncryptedBytes string `json:"EncryptedBytes"`
-	ExpiresIn      uint32 `json:"ExpiresIn"`
+	EncryptedBytes string `json:"encryptedBytes"`
+	ExpiresIn      uint32 `json:"expiresIn"`
 }
 
 type CreateOtsRes struct {
-	ID        string `json:"Id"`
-	ExpiresAt int64  `json:"ExpiresAt"`
+	Id        string `json:"id"`
+	ExpiresAt int64  `json:"expiresAt"`
 	ViewURL   *url.URL
 }
 
-func CreateOts(encryptedBytes []byte, expiresIn time.Duration) (*CreateOtsRes, error) {
+func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*CreateOtsRes, error) {
 	baseUrl := viper.GetString("base_url")
+
+	reqUrl := url.URL{
+		Scheme: "https",
+		Host:   fmt.Sprintf("ots.%s.%s", region, baseUrl),
+		Path:   "secrets",
+	}
 
 	reqBody := &CreateOtsReq{
 		EncryptedBytes: base64.StdEncoding.EncodeToString(encryptedBytes),
@@ -58,7 +65,7 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration) (*CreateOtsRes, e
 
 	client := &http.Client{}
 
-	req, err := http.NewRequest("POST", baseUrl, payloadBuf)
+	req, err := http.NewRequest("POST", reqUrl.String(), payloadBuf)
 	if err != nil {
 		return nil, err
 	}

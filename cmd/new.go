@@ -33,12 +33,13 @@ import (
 
 const (
 	defaultExpiry = 24 * time.Hour
+	defaultRegion = "us-east-1"
 )
 
 var (
 	expires time.Duration
+	region  string
 
-	// newCmd represents the new command.
 	newCmd = &cobra.Command{
 		Use:   "new",
 		Short: "Create end-to-end encrypted secret",
@@ -46,7 +47,7 @@ var (
 Encrypts a secret and makes it available for sharing via one-time URL.
 
 The secret is stored encrypted for a specified duration which can range
-from 5 minutes to 7 days (default is 72 hours). The secret gets deleted
+from 5 minutes to 7 days (default is 24 hours). The secret gets deleted
 from the server upon retrieval therefore can only be viewed once.
 `,
 		Args: cobra.NoArgs,
@@ -57,6 +58,10 @@ from the server upon retrieval therefore can only be viewed once.
 
 			if expires.Hours() > 168 {
 				return errors.New("expiry must be less than 7 days")
+			}
+
+			if !isValidRegion(region) {
+				return errors.New("invalid region")
 			}
 
 			bytes, err := getInputBytes()
@@ -71,7 +76,7 @@ from the server upon retrieval therefore can only be viewed once.
 
 			ciphertext, key := encryptedBytes.Ciphertext, encryptedBytes.Key
 
-			ots, err := client.CreateOts(ciphertext, expires)
+			ots, err := client.CreateOts(ciphertext, expires, region)
 			if err != nil {
 				return err
 			}
@@ -79,7 +84,8 @@ from the server upon retrieval therefore can only be viewed once.
 			expiresAt := time.Unix(ots.ExpiresAt, 0)
 
 			q := ots.ViewURL.Query()
-			q.Set("ref", "cli")
+			q.Set("ref", "ots-cli")
+			q.Set("region", region)
 			q.Set("v", build.Version)
 			ots.ViewURL.RawQuery = q.Encode()
 			ots.ViewURL.Fragment = base64.URLEncoding.EncodeToString(key)
@@ -108,6 +114,7 @@ func init() {
 	rootCmd.AddCommand(newCmd)
 
 	newCmd.Flags().DurationVarP(&expires, "expires", "x", defaultExpiry, "Secret will be deleted from the server after specified duration, supported units: s,m,h")
+	newCmd.Flags().StringVar(&region, "region", defaultRegion, "The region where secret should be created, supported regions: us-east-1,eu-central-1")
 }
 
 func getInputBytes() ([]byte, error) {
@@ -131,4 +138,14 @@ func getInputBytes() ([]byte, error) {
 
 		return []byte(bytes), nil
 	}
+}
+
+func isValidRegion(region string) bool {
+	switch region {
+	case
+		"us-east-1",
+		"eu-central-1":
+		return true
+	}
+	return false
 }
