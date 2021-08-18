@@ -5,7 +5,7 @@
 See the [releases page](https://github.com/sniptt-official/ots/releases) for available binaries.
 
 ```sh
-$ curl -L https://github.com/sniptt-official/ots/releases/download/v0.0.11/ots_0.0.11_darwin_amd64.tar.gz -o ots.tar.gz
+$ curl -L https://github.com/sniptt-official/ots/releases/download/v0.1.0/ots_0.1.0_darwin_amd64.tar.gz -o ots.tar.gz
 $ sudo mkdir -p /usr/local/ots-cli
 $ sudo tar -C /usr/local/ots-cli -xvf ots.tar.gz
 $ sudo ln -sf /usr/local/ots-cli/ots /usr/local/bin/ots
@@ -16,7 +16,7 @@ Assuming `/usr/local/bin` is on your `PATH`, you can now run:
 
 ```sh
 $ ots --version
-ots version 0.0.11
+ots version 0.1.0
 ```
 
 ### Uninstall
