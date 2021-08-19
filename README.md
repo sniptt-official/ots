@@ -20,7 +20,7 @@
 
 <p align="center"><b>Looking for the web version?</b></p>
 
-<p align="center">https://www.sniptt.com/ots</p>
+<p align="center">https://ots.sniptt.com</p>
 
 ***
 
