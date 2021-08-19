@@ -31,11 +31,8 @@
 The recommended way to install `ots` on macOS is via Homebrew.
 
 ```sh
-brew tap sniptt-official/tap
 brew install ots
 ```
-
-*NOTE: We need 30 forks, 30 watchers, and 75 stars to make it to Homebrew/core. Please help us get there 👀!*
 
 ### Go
 
