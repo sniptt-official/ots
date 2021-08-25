@@ -1,4 +1,12 @@
 <p align="center">
+  <b>👀 The web version has now moved to <a href="https://ots.sniptt.com">ots.sniptt.com</a> 👀</b>
+</p>
+
+<p align="center">
+  Please upgrade the CLI to <a href="https://github.com/sniptt-official/ots/releases/tag/v0.1.0">version 0.1.0</a>
+</p>
+
+<p align="center">
   <a href="https://sniptt.com">
     <img src=".github/assets/ots-social-cover.svg" alt="Ots Logo" />
   </a>
