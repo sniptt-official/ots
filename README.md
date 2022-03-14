@@ -34,13 +34,13 @@
 
 The recommended way to install `ots` on macOS is via Homebrew.
 
-```sh
+```
 brew install ots
 ```
 
 ### Go
 
-```sh
+```
 go get -u github.com/sniptt-official/ots
 ```
 
@@ -50,8 +50,8 @@ go get -u github.com/sniptt-official/ots
 
 ### Prompt
 
-```sh
-$ ots new -x 2h
+```
+> ots new -x 2h
 Enter your secret: 
 ```
 
@@ -59,33 +59,50 @@ Enter your secret:
 
 You can also use pipes, for example
 
-```sh
-$ pbpaste | ots new
+```
+pbpaste | ots new
 ```
 
 or
 
-```sh
-$ cat .env | ots new
+```
+cat .env | ots new
 ```
 
 ### Data residency
 
 Use `--region` to choose where the secrets reside.
 
-```sh
-$ ots new -x 24h --region eu-central-1
+```
+ots new -x 24h --region eu-central-1
 ```
 
 ### Self-hosting
 
 Please refer to [the official CDK construct](https://github.com/sniptt-official/ots-aws) for detailed instructions.
 
-In `~/.ots.yaml` (or whatever you provide to `--config`):
+Grab your API Gateway URL, API key and configure `~/.ots.yaml` (or whatever you provide to `--config`):
 
 ```yaml
 apiUrl: https://YOUR_API_ID.execute-api.YOUR_REGION.amazonaws.com/prod/secrets
 apiKey: YOUR_API_KEY
+```
+
+Use `ots` as before:
+
+```
+> ots new -x 2h
+Using config file: /Users/xxx/.ots.yaml
+Enter your secret: ***
+Your secret is now available on the below URL.
+
+https://my-ots-web-view.com/burn-secret?id=xxx&ref=ots-cli&region=us-east-1&v=debug#xxx
+
+You should only share this URL with the intended recipient.
+
+Please note that once retrieved, the secret will no longer
+be available for viewing. If not viewed, the secret will
+automatically expire at approximately xx xxx xxxx xx:xx:xx.
 ```
 
 ## FAQs
