@@ -84,8 +84,8 @@ Please refer to [the official CDK construct](https://github.com/sniptt-official/
 In `~/.ots.yaml`:
 
 ```yaml
-apiUrl: https://$YOUR_API_ID.execute-api.$YOUR_REGION.amazonaws.com/prod/secrets
-apiKey: $YOUR_API_KEY
+apiUrl: https://YOUR_API_ID.execute-api.YOUR_REGION.amazonaws.com/prod/secrets
+apiKey: YOUR_API_KEY
 ```
 
 ## FAQs
