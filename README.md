@@ -81,7 +81,7 @@ $ ots new -x 24h --region eu-central-1
 
 Please refer to [the official CDK construct](https://github.com/sniptt-official/ots-aws) for detailed instructions.
 
-In `~/.ots.yaml`:
+In `~/.ots.yaml` (or whatever you provide to `--config`):
 
 ```yaml
 apiUrl: https://YOUR_API_ID.execute-api.YOUR_REGION.amazonaws.com/prod/secrets
