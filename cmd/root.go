@@ -61,7 +61,6 @@ func initConfig() {
 		viper.AddConfigPath(home)
 		viper.SetConfigType("yaml")
 		viper.SetConfigName(".ots")
-		viper.SetDefault("base_url", build.BaseUrl)
 	}
 
 	// Read in environment variables that match.
