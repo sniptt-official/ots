@@ -42,12 +42,17 @@ type CreateOtsRes struct {
 }
 
 func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*CreateOtsRes, error) {
-	baseUrl := viper.GetString("base_url")
+	defaultApiUrl := fmt.Sprintf("https://ots.%s.api.sniptt.com/secrets", region)
 
-	reqUrl := url.URL{
-		Scheme: "https",
-		Host:   fmt.Sprintf("ots.%s.%s", region, baseUrl),
-		Path:   "secrets",
+	// Fetch user configuration (for self-hosted)
+	viper.SetDefault("apiUrl", defaultApiUrl)
+	apiUrl := viper.GetString("apiUrl")
+	apiKey := viper.GetString("apiKey")
+
+	// Build the request
+	reqUrl, err := url.Parse(apiUrl)
+	if err != nil {
+		return nil, err
 	}
 
 	reqBody := &CreateOtsReq{
@@ -55,10 +60,8 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*
 		ExpiresIn:      uint32(expiresIn.Seconds()),
 	}
 
-	resBody := &CreateOtsRes{}
-
 	payloadBuf := new(bytes.Buffer)
-	err := json.NewEncoder(payloadBuf).Encode(reqBody)
+	err = json.NewEncoder(payloadBuf).Encode(reqBody)
 	if err != nil {
 		return nil, err
 	}
@@ -74,11 +77,20 @@ func CreateOts(encryptedBytes []byte, expiresIn time.Duration, region string) (*
 	req.Header.Add("X-Client-Name", "ots-cli")
 	req.Header.Add("X-Client-Version", build.Version)
 
+	// Add optional authentication (for self-hosted)
+	if apiKey != "" {
+		req.Header.Add("X-Api-Key", apiKey)
+	}
+
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
+
 	defer res.Body.Close()
+
+	// Build the response
+	resBody := &CreateOtsRes{}
 
 	err = decodeJSON(res, resBody)
 	if err != nil {

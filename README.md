@@ -1,5 +1,5 @@
 <p align="center">
-  Please upgrade the CLI to <a href="https://github.com/sniptt-official/ots/releases/tag/v0.1.0">version 0.1.0</a>
+  <b>Looking to self-host? Use <a href="https://github.com/sniptt-official/ots-aws">the official CDK construct</a></b>
 </p>
 
 <p align="center">
@@ -44,10 +44,6 @@ brew install ots
 go get -u github.com/sniptt-official/ots
 ```
 
-### Manual
-
-Please refer to the [manual install](./docs/manual-install.md) doc.
-
 ## Usage
 
 ![render1628628123170](https://user-images.githubusercontent.com/778109/128932301-190388b3-171c-4e41-be5c-88ecf315beda.gif)
@@ -79,6 +75,17 @@ Use `--region` to choose where the secrets reside.
 
 ```sh
 $ ots new -x 24h --region eu-central-1
+```
+
+### Self-hosting
+
+Please refer to [the official CDK construct](https://github.com/sniptt-official/ots-aws) for detailed instructions.
+
+In `~/.ots.yaml`:
+
+```yaml
+apiUrl: https://$YOUR_API_ID.execute-api.$YOUR_REGION.amazonaws.com/prod/secrets
+apiKey: $YOUR_API_KEY
 ```
 
 ## FAQs
