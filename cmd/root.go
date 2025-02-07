@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -37,37 +38,50 @@ var (
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	cobra.CheckErr(rootCmd.Execute())
+func Execute(ctx context.Context) {
+	if err := rootCmd.ExecuteContext(ctx); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
 }
 
 func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.ots.yaml)")
+
+	initDefaults()
+}
+
+func initDefaults() {
+	// Set default API URL for each region
+	viper.SetDefault("apiUrl.us-east-1", "https://ots.us-east-1.api.sniptt.com/secrets")
+	viper.SetDefault("apiUrl.eu-central-1", "https://ots.eu-central-1.api.sniptt.com/secrets")
+	// Set default API keys for each region
+	viper.SetDefault("apiKey.us-east-1", "V3aFLdJneB21Cyd5m6peY7TEMy9H13kH3KQUHGnC")
+	viper.SetDefault("apiKey.eu-central-1", "xLNkEyYKlS4Fu3ieSZtjY34rG9DeQXeY3a3QvGwA")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
-		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Find home directory.
 		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error getting home directory: %v\n", err)
+			os.Exit(1)
+		}
 
-		// Search config in home directory with name ".ots" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigType("yaml")
 		viper.SetConfigName(".ots")
 	}
 
-	// Read in environment variables that match.
+	viper.SetEnvPrefix("OTS")
 	viper.AutomaticEnv()
 
-	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		fmt.Fprintf(os.Stderr, "Using config file: %s\n", viper.ConfigFileUsed())
 	}
 }
