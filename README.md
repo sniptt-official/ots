@@ -1,15 +1,11 @@
 <p align="center">
-  <b>Looking to self-host? Use <a href="https://github.com/sniptt-official/ots-aws">the official CDK construct</a></b>
-</p>
-
-<p align="center">
   <a href="https://sniptt.com">
-    <img src=".github/assets/ots-social-cover.svg" alt="Ots Logo" />
+    <img src=".github/assets/ots-social-cover.svg" alt="OTS Logo" />
   </a>
 </p>
 
 <p align="right">
-  <i>If you use this repo, star it ✨</i>
+  <i>If you use this repo, please star it ✨</i>
 </p>
 
 ***
@@ -55,6 +51,8 @@ go get -u github.com/sniptt-official/ots
 Enter your secret: 
 ```
 
+The default expiry is 24 hours.
+
 ### Pipeline
 
 You can also use pipes, for example
@@ -73,41 +71,15 @@ cat .env | ots new
 
 Use `--region` to choose where the secrets reside.
 
+The default region is `us-east-1`.
+
 ```
 ots new -x 24h --region eu-central-1
 ```
 
-### Self-hosting
-
-Please refer to [the official CDK construct](https://github.com/sniptt-official/ots-aws) for detailed instructions.
-
-Grab your API Gateway URL, API key and configure `~/.ots.yaml` (or whatever you provide to `--config`):
-
-```yaml
-apiUrl: https://YOUR_API_ID.execute-api.YOUR_REGION.amazonaws.com/prod/secrets
-apiKey: YOUR_API_KEY
-```
-
-Use `ots` as before:
-
-```
-> ots new -x 2h
-Using config file: /Users/xxx/.ots.yaml
-Enter your secret: ***
-Your secret is now available on the below URL.
-
-https://my-ots-web-view.com/burn-secret?id=xxx&ref=ots-cli&region=us-east-1&v=debug#xxx
-
-You should only share this URL with the intended recipient.
-
-Please note that once retrieved, the secret will no longer
-be available for viewing. If not viewed, the secret will
-automatically expire at approximately xx xxx xxxx xx:xx:xx.
-```
-
 ## FAQs
 
-Please refer to our Q\&A discussions.
+Please refer to our Q&A discussions.
 
 *   [Why should I trust you with my secrets?](https://github.com/sniptt-official/ots/discussions/13)
 *   [Can I persist my secrets for later use?](https://github.com/sniptt-official/ots/discussions/15)

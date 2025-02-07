@@ -1,34 +1,35 @@
-name: ci
+name: Go CI
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+  build-and-test:
+    name: Test, Lint, and Build
+    runs-on: ubuntu-latest
 
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      -
-        name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17
-      -
-        name: Download dependencies
-        run: go mod download
-      -
-        name: Build
-        run: go build
-      -
-        name: Test
-        run: go test ./...
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: 1.23
+
+    - name: Install dependencies
+      run: go mod tidy
+
+    - name: Run tests
+      run: go test ./... -v
+      
+    - name: Lint the project
+      uses: golangci/golangci-lint-action@v6
+      with:
+        version: v1.60
+
+    - name: Build the project
+      run: go build -v main.go
