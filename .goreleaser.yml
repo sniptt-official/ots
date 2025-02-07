@@ -1,8 +1,7 @@
 version: 2
 
 builds:
-  -
-    goos:
+  - goos:
       - linux
       - windows
       - darwin
@@ -13,7 +12,7 @@ builds:
         - -s -w -X github.com/sniptt-official/ots/build.Version={{.Version}}
 
 archives:
-  - format: tar.gz
+  - formats: tar.gz
     format_overrides:
       - goos: windows
-        format: zip
+        formats: zip
