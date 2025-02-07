@@ -51,6 +51,8 @@ go get -u github.com/sniptt-official/ots
 Enter your secret: 
 ```
 
+The default expiry is 24 hours.
+
 ### Pipeline
 
 You can also use pipes, for example
@@ -69,13 +71,15 @@ cat .env | ots new
 
 Use `--region` to choose where the secrets reside.
 
+The default region is `us-east-1`.
+
 ```
 ots new -x 24h --region eu-central-1
 ```
 
 ## FAQs
 
-Please refer to our Q\&A discussions.
+Please refer to our Q&A discussions.
 
 *   [Why should I trust you with my secrets?](https://github.com/sniptt-official/ots/discussions/13)
 *   [Can I persist my secrets for later use?](https://github.com/sniptt-official/ots/discussions/15)
