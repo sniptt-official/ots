@@ -59,7 +59,10 @@ func CreateOts(ctx context.Context, encryptedBytes []byte, expiresIn time.Durati
 		return nil, fmt.Errorf("no API URL configured for region: %s", region)
 	}
 
-	apiKey := viper.GetString("apiKey")
+	apiKey := viper.GetString(fmt.Sprintf("apiKey.%s", region))
+	if apiKey == "" {
+		return nil, fmt.Errorf("no API key configured for region: %s", region)
+	}
 
 	// Build the request
 	reqURL, err := url.Parse(apiURL)
@@ -86,11 +89,7 @@ func CreateOts(ctx context.Context, encryptedBytes []byte, expiresIn time.Durati
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-Client-Name", "ots-cli")
 	req.Header.Set("X-Client-Version", build.Version)
-
-	// Add optional authentication (for self-hosted)
-	if apiKey != "" {
-		req.Header.Set("X-Api-Key", apiKey)
-	}
+	req.Header.Set("X-Api-Key", apiKey)
 
 	client := &http.Client{
 		Timeout: 30 * time.Second,
